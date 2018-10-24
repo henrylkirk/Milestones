@@ -2,7 +2,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class EdgeConnectorTest {
-    EdgeConnector ec = new EdgeConnector("Courss.edg");
+    int numConnector = 1
+    
+    EdgeConnector ec = new EdgeConnector(numConnector + DELIM + endPoint1 + DELIM + endPoint2 + DELIM + endStyle1 + DELIM + endStyle2);
     
     //@Test
     //public void testGetNumConnector()
