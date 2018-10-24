@@ -2,13 +2,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class EdgeConnectorTest {
-    String numConnector = "1";
-    String endPoint1 = "2";
-    String endPoint2 = "3";
-    String endStyle1 = "Test1";
-    String endStyle2 = "Test2";
+    private String numConnector = "1";
+    private String endPoint1 = "2";
+    private String endPoint2 = "3";
+    private String endStyle1 = "Test1";
+    private String endStyle2 = "Test2";
     
-    EdgeConnector ec = new EdgeConnector(numConnector + "|" + endPoint1 + "|"+ endPoint2 + "|" + endStyle1 + "|" + endStyle2);
+    private EdgeConnector ec = new EdgeConnector(numConnector + "|" + endPoint1 + "|"+ endPoint2 + "|" + endStyle1 + "|" + endStyle2);
     
     @Test
     public void testGetNumConnector(){
