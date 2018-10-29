@@ -10,24 +10,25 @@ public class EdgeFieldTest {
     private EdgeField[] fields;
     private EdgeField testField;
 
+    private static final String DELIM = "|";
+    private static final int NUM = 99;
+    private static final String NAME = "TESTNAME";
+
     @Before
     public void setUp() {
-        parseFile = new File("Courses.edg");
-        ecfp = new EdgeConvertFileParser(parseFile);
-        fields = ecfp.getEdgeFields();
-        testField = fields[0];
+        testField = new EdgeField(NUM + DELIM + NAME);
     }
 
     @Test
     public void testGetNumFigure() {
         int numFigure = testField.getNumFigure();
-        assertEquals(numFigure,3);
+        assertEquals(numFigure,99);
     }
 
     @Test
     public void testGetName() {
         String name = testField.getName();
-        assertEquals(name,"Grade");
+        assertEquals(name,"TESTNAME");
     }
 
     @Test
