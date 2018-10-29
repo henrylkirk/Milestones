@@ -7,45 +7,47 @@ public class EdgeTableTest {
 
     private EdgeConvertFileParser ecfp;
     private File parseFile;
-    private EdgeTable[] tables;
     private EdgeTable testTable;
+
+    private static final String DELIM = "|";
+    private static final int NUM = 99;
+    private static final String NAME = "TEST";
 
     @Before
     public void setUp() {
-        parseFile = new File("Courses.edg");
-        ecfp = new EdgeConvertFileParser(parseFile);
-        tables = ecfp.getEdgeTables();
-        testTable = tables[0];
+        testTable = new EdgeTable(NUM+DELIM+NAME);
         testTable.makeArrays();
     }
 
     @Test
     public void testGetNumFigure() {
         int num = testTable.getNumFigure();
-        assertEquals(num,1);
+        assertEquals(num,99);
     }
 
     @Test
     public void testGetName() {
         String name = testTable.getName();
-        assertEquals(name,"STUDENT");
+        assertEquals(name,"TEST");
     }
 
     @Test
     public void testGetRelatedTablesArray() {
-        testTable.addRelatedTable(99);
+        testTable.addRelatedTable(991);
         testTable.makeArrays();
         int[] relatedTables = testTable.getRelatedTablesArray();
         int relatedTable = relatedTables[0];
-        assertEquals(relatedTable,99);
+        assertEquals(relatedTable,991);
     }
 
     @Test
     public void testRelatedFields() {
-        testTable.setRelatedField(0,99);
+        testTable.addNativeField(0);
+        testTable.setRelatedField(0,992);
+        testTable.makeArrays();
         int[] relatedFields = testTable.getRelatedFieldsArray();
         int fieldNum = relatedFields[0];
-        assertEquals(fieldNum,99);
+        assertEquals(fieldNum,992);
     }
 
     @Test
