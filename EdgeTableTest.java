@@ -42,9 +42,11 @@ public class EdgeTableTest {
 
     @Test
     public void testRelatedFields() {
-        testTable.addNativeField(0);
-        testTable.setRelatedField(0,992);
+        File parseFile = new File("Courses.edg");
+        EdgeConvertFileParser ecfp = new EdgeConvertFileParser(parseFile);
+        testTable = ecfp.getEdgeTables()[0];
         testTable.makeArrays();
+        testTable.setRelatedField(0,992);
         int[] relatedFields = testTable.getRelatedFieldsArray();
         int fieldNum = relatedFields[0];
         assertEquals(fieldNum,992);
