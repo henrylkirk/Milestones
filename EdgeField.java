@@ -6,9 +6,10 @@ public class EdgeField {
    private boolean disallowNull, isPrimaryKey;
    private static String[] strDataType = {"Varchar", "Boolean", "Integer", "Double"};
    public static final int VARCHAR_DEFAULT_LENGTH = 1;
+   public static final String DELIM = ","
    
    public EdgeField(String inputString) {
-      StringTokenizer st = new StringTokenizer(inputString, EdgeConvertFileParser.DELIM);
+      StringTokenizer st = new StringTokenizer(inputString, DELIM);
       numFigure = Integer.parseInt(st.nextToken());
       name = st.nextToken();
       tableID = 0;

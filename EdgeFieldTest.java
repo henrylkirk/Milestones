@@ -9,10 +9,9 @@ public class EdgeFieldTest {
     private File parseFile;
     private EdgeField[] fields;
     private EdgeField testField;
-
-    private static final String DELIM = "|";
-    private static final int NUM = 99;
-    private static final String NAME = "TESTNAME";
+    
+    private int testNum
+    private String testName
 
     @Before
     public void setUp() {
