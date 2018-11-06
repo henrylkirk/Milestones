@@ -50,30 +50,42 @@ public class MainTester {
         return ret;
     }
 
+    // Open file from input string and create test objects
     private void handleTestFile() throws IOException {
         FileReader fr = new FileReader(inputString);
         BufferedReader br = new BufferedReader(fr);
 
         String line;
         Object[][] testObjects = new Object[][]{{}};
+        String[] values = {}; // to store test object parameters
         while((line = br.readLine()) != null) {
-            String[] values = line.split(",");
-            int testNum = Integer.parseInt(values[0]);
-            int testPoint1 = Integer.parseInt(values[1]);
-            int testPoint2 = Integer.parseInt(values[2]);
-            String testStyle1 = values[3];
-            String testStyle2 = values[4];
-            testObjects = appendArrays(testObjects,new Object[][]{{testNum,testPoint1,testPoint2,testStyle1,testStyle2}});
+            values = line.split(",");
+            if(values.length == 5){ // EdgeConnector
+                testObjects = appendArrays(testObjects,new Object[][]{{Integer.parseInt(values[0]),Integer.parseInt(values[1]),Integer.parseInt(values[2]),values[3],values[4]}});
+            } else if(values.length == 2) { // EdgeField
+                testObjects = appendArrays(testObjects,new Object[][]{{Integer.parseInt(values[0]),values[1]}});
+            }
         }
 
-        // Pass objects to test class
-        EdgeConnectorTest.prepare(testObjects);
-        Result result = JUnitCore.runClasses(EdgeConnectorTest.class);
-        for (Failure failure : result.getFailures()) {
-          System.out.println(failure.toString());
-        }
-
+        // Close file reader
         br.close();
+
+        // Run test class depending on number of values
+        if(values.length == 5){ // EdgeConnector
+            // Pass objects to test class
+            EdgeConnectorTest.prepare(testObjects);
+            Result result = JUnitCore.runClasses(EdgeConnectorTest.class);
+            for (Failure failure : result.getFailures()) {
+              System.out.println(failure.toString());
+            }
+        } else if(values.length == 2) { // EdgeField
+            // Pass objects to test class
+            EdgeFieldTest.prepare(testObjects);
+            Result result = JUnitCore.runClasses(EdgeFieldTest.class);
+            for (Failure failure : result.getFailures()) {
+              System.out.println(failure.toString());
+            }
+        }
     }
 
     public static void main(String[] args) {
