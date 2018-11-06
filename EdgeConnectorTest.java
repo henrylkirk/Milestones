@@ -42,7 +42,6 @@ public class EdgeConnectorTest {
 
     @Parameterized.Parameters
     public static Collection input() {
-        // return Arrays.asList(new Object[][]{{15,12,35,"test1a","test1b"},{13,22,33,"test2a","test2b"}});
         return Arrays.asList(EdgeConnectorTest.testObjects);
     }
 
