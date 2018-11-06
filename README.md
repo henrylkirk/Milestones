@@ -19,3 +19,11 @@ javac -cp .:junit-4.12.jar EdgeConvertFileParserTest.java
 javac EdgeConvertFileParser.java
 java -cp .:junit-4.12.jar:hamcrest-core-1.3.jar \
     org.junit.runner.JUnitCore EdgeConvertFileParserTest
+
+javac -cp .:junit-4.12.jar MainTester.java
+java -cp .:junit-4.12.jar:hamcrest-core-1.3.jar \
+    org.junit.runner.JUnitCore MainTester -n "1,2,3,test1,test2"
+java -cp .:junit-4.12.jar:hamcrest-core-1.3.jar \
+    org.junit.runner.JUnitCore MainTester -f "testObjectFile.txt"
+java -cp .:junit-4.12.jar:hamcrest-core-1.3.jar \
+    org.junit.runner.JUnitCore MainTester -h
