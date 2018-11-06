@@ -1,69 +1,103 @@
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+import java.util.*;
 
+@RunWith(Parameterized.class)
 public class EdgeConnectorTest {
-    private String numConnector = "1";
-    private String endPoint1 = "2";
-    private String endPoint2 = "3";
-    private String endStyle1 = "Test1";
-    private String endStyle2 = "Test2";
-    
-    private EdgeConnector ec = new EdgeConnector(numConnector + "|" + endPoint1 + "|"+ endPoint2 + "|" + endStyle1 + "|" + endStyle2);
-    
+
+    private EdgeConnector ec;
+    private StringBuilder sb = new StringBuilder();
+
+    private int testNum;
+    private int testPoint1;
+    private int testPoint2;
+    private String testStyle1;
+    private String testStyle2;
+    private boolean testEP1F;
+    private boolean testEP2F;
+    private boolean testEP1T;
+    private boolean testEP2T;
+
+    private static Object[][] testObjects;
+
+    public EdgeConnectorTest(int testNum, int testPoint1, int testPoint2, String testStyle1, String testStyle2){
+      super();
+      this.testNum = testNum;
+      this.testPoint1 = testPoint1;
+      this.testPoint2 = testPoint2;
+      this.testStyle1 = testStyle1;
+      this.testStyle2 = testStyle2;
+      String inputString = testNum + EdgeConnector.DELIM + testPoint1 + EdgeConnector.DELIM + testPoint2 + EdgeConnector.DELIM + testStyle1 + EdgeConnector.DELIM + testStyle2;
+      System.out.println(inputString);
+      ec = new EdgeConnector(inputString);
+    }
+
+    // Accepts test objects
+    public static void prepare(Object[][] testObjects) {
+        EdgeConnectorTest.testObjects = testObjects;
+    }
+
+    @Parameterized.Parameters
+    public static Collection input() {
+        // return Arrays.asList(new Object[][]{{15,12,35,"test1a","test1b"},{13,22,33,"test2a","test2b"}});
+        return Arrays.asList(EdgeConnectorTest.testObjects);
+    }
+
     @Test
     public void testGetNumConnector(){
       int numConnect = ec.getNumConnector();
-      assertEquals(1,numConnect);
+      assertEquals(testNum,numConnect);
     }
-    
+
     @Test
     public void testGetEndPoint1(){
       int point1 = ec.getEndPoint1();
-      assertEquals(2,point1);
+      assertEquals(testPoint1,point1);
     }
-    
+
     @Test
     public void testGetEndPoint2(){
       int point2 = ec.getEndPoint2();
-      assertEquals(3,point2);
+      assertEquals(testPoint2,point2);
     }
-    
+
     @Test
     public void testGetEndStyle1(){
       String style1 = ec.getEndStyle1();
-      assertEquals("Test1",style1);
+      assertEquals(testStyle1,style1);
     }
-    
+
     @Test
     public void testGetEndStyle2(){
       String style2 = ec.getEndStyle2();
-      assertEquals("Test2",style2);
+      assertEquals(testStyle2,style2);
     }
-   
+
     @Test
     public void testIsEP1Field(){
       ec.setIsEP1Field(true);
       boolean ep1Field = ec.getIsEP1Field();
       assertEquals(true,ep1Field);
     }
-    
+
     @Test
     public void testIsEP2Field(){
       ec.setIsEP2Field(true);
       boolean ep2Field = ec.getIsEP2Field();
       assertEquals(true,ep2Field);
     }
-    
+
     @Test
     public void testIsEP1Table(){
-      ec.setIsEP1Table(true);
       boolean ep1Table = ec.getIsEP1Table();
       assertEquals(true,ep1Table);
     }
-    
+
     @Test
     public void testIsEP2Table(){
-      ec.setIsEP2Table(true);
       boolean ep2Table = ec.getIsEP2Table();
       assertEquals(true,ep2Table);
     }
