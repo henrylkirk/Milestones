@@ -10,6 +10,7 @@ public class EdgeConnectorTest {
 
     private EdgeConnector ec;
     private StringBuilder sb = new StringBuilder();
+    private static final String DELIM = ",";
 
     private int testNum;
     private int testPoint1;
@@ -30,7 +31,7 @@ public class EdgeConnectorTest {
       this.testPoint2 = testPoint2;
       this.testStyle1 = testStyle1;
       this.testStyle2 = testStyle2;
-      String inputString = testNum + EdgeConnector.DELIM + testPoint1 + EdgeConnector.DELIM + testPoint2 + EdgeConnector.DELIM + testStyle1 + EdgeConnector.DELIM + testStyle2;
+      String inputString = testNum + DELIM + testPoint1 + DELIM + testPoint2 + DELIM + testStyle1 + DELIM + testStyle2;
       System.out.println(inputString);
       ec = new EdgeConnector(inputString);
     }
