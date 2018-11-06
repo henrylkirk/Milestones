@@ -1,22 +1,31 @@
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import org.junit.Before;
-import java.io.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+import java.util.*;
 
+@RunWith(Parameterized.class)
 public class EdgeFieldTest {
 
-    private EdgeConvertFileParser ecfp;
-    private File parseFile;
-    private EdgeField[] fields;
     private EdgeField testField;
+    private static Object[][] testObjects;
 
     private static final String DELIM = "|";
-    private static final int NUM = 99;
-    private static final String NAME = "TESTNAME";
 
-    @Before
-    public void setUp() {
-        testField = new EdgeField(NUM + DELIM + NAME);
+    public EdgeFieldTest(int num, String name) {
+        super();
+        testField = new EdgeField(num + DELIM + name);
+    }
+
+    // Accepts test objects
+    public static void prepare(Object[][] testObjects) {
+        EdgeFieldTest.testObjects = testObjects;
+    }
+
+    @Parameterized.Parameters
+    public static Collection input() {
+        return Arrays.asList(EdgeFieldTest.testObjects);
     }
 
     @Test
