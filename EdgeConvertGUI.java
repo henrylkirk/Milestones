@@ -927,6 +927,7 @@ public class EdgeConvertGUI {
       returnVal = jfcOutputDir.showOpenDialog(null);
 
       if (returnVal == JFileChooser.CANCEL_OPTION) {
+         outputDir = null;
          return;
       }
 
