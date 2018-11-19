@@ -67,6 +67,7 @@ public class EdgeConvertGUI {
    static JMenuBar jmbDRMenuBar;
    static JMenu jmDRFile, jmDROptions, jmDRHelp;
    static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout;
+   private JTabbedPane tabbedHelpPane;
 
    public EdgeConvertGUI() {
       menuListener = new EdgeMenuListener();
@@ -149,8 +150,8 @@ public class EdgeConvertGUI {
 
       jfcEdge = new JFileChooser();
       jfcOutputDir = new JFileChooser();
-	   effEdge = new ExampleFileFilter("edg", "Edge Diagrammer Files");
-   	effSave = new ExampleFileFilter("sav", "Edge Convert Save Files");
+	  effEdge = new ExampleFileFilter("edg", "Edge Diagrammer Files");
+   	  effSave = new ExampleFileFilter("sav", "Edge Convert Save Files");
       jfcOutputDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
       jpDTBottom = new JPanel(new GridLayout(1, 2));
@@ -531,6 +532,14 @@ public class EdgeConvertGUI {
       jmiDRHelpAbout.addActionListener(menuListener);
       jmDRHelp.add(jmiDRHelpAbout);
 
+      // Create tabbed panel to display for help system
+      tabbedHelpPane = new JTabbedPane();
+      JComponent panel = makeTextPanel("Panel #1");
+      tabbedHelpPane.addTab("Tab 1", null, panel, "Still does nothing");
+      JComponent panel2 = makeTextPanel("Panel #2");
+      tabbedHelpPane.addTab("Tab 2", null, panel2, "Still does nothing");
+      tabbedHelpPane.setPreferredSize(new Dimension(HORIZ_SIZE,VERT_SIZE));
+
       jpDRCenter = new JPanel(new GridLayout(2, 2));
       jpDRCenter1 = new JPanel(new BorderLayout());
       jpDRCenter2 = new JPanel(new BorderLayout());
@@ -723,6 +732,15 @@ public class EdgeConvertGUI {
       jpDRBottom.add(jbDRCreateDDL);
       jfDR.getContentPane().add(jpDRBottom, BorderLayout.SOUTH);
    } //createDRScreen
+
+   protected JComponent makeTextPanel(String text) {
+       JPanel panel = new JPanel(false);
+       JLabel filler = new JLabel(text);
+       filler.setHorizontalAlignment(JLabel.CENTER);
+       panel.setLayout(new GridLayout(1, 1));
+       panel.add(filler);
+       return panel;
+   }
 
    public static void setReadSuccess(boolean value) {
       readSuccess = value;
@@ -1271,9 +1289,18 @@ public class EdgeConvertGUI {
          }
 
          if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDRHelpAbout)) {
-            JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
-                                                "by Stephen A. Capperell\n" +
-                                                "� 2007-2008");
+            // JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
+            //                                     "by Stephen A. Capperell\n" +
+            //                                     "� 2007-2008");
+            // Create and display help tab pane
+            JFrame helpFrame = new JFrame("Help");
+            // helpFrame.setSize(HORIZ_SIZE, VERT_SIZE);
+            helpFrame.getContentPane().setSize(800, 400);
+            helpFrame.setLocation(HORIZ_LOC, VERT_LOC);
+            helpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            helpFrame.add(tabbedHelpPane, BorderLayout.CENTER); //Add content to the window.
+            helpFrame.pack(); //Display the window.
+            helpFrame.setVisible(true);
          }
       } // EdgeMenuListener.actionPerformed()
    } // EdgeMenuListener
