@@ -7,6 +7,7 @@ import java.util.*;
 public class MainTester {
 
     private String inputString;
+    private static final String DELIM = ",";
 
     MainTester(String inputString) {
         this.inputString = inputString;
@@ -22,7 +23,7 @@ public class MainTester {
     private void handleTestObject() {
 
         // Break up inputString
-        StringTokenizer st = new StringTokenizer(inputString, EdgeConnector.DELIM);
+        StringTokenizer st = new StringTokenizer(inputString, DELIM);
         int testNum = Integer.parseInt(st.nextToken());
         int testPoint1 = Integer.parseInt(st.nextToken());
         int testPoint2 = Integer.parseInt(st.nextToken());
