@@ -1,5 +1,6 @@
 # Milestones
 
+## To compile test files:
 javac -cp .:junit-4.12.jar EdgeConnectorTest.java
 javac EdgeConnector.java
 java -cp .:junit-4.12.jar:hamcrest-core-1.3.jar \
@@ -27,3 +28,9 @@ java -cp .:junit-4.12.jar:hamcrest-core-1.3.jar \
     org.junit.runner.JUnitCore MainTester -f "testObjectFile.txt"
 java -cp .:junit-4.12.jar:hamcrest-core-1.3.jar \
     org.junit.runner.JUnitCore MainTester -h
+
+## To run distribution file:
+1. Install java if not installed
+2. Download Milestones.jar
+3. Navigate to downloads folder (or to wherever file was downloaded)
+4. Double-click Milestones.jar
