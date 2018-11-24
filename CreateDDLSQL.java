@@ -10,7 +10,7 @@ public class CreateDDLSQL extends EdgeConvertCreateDDL {
 
    protected String databaseName;
    //this array is for determining how MySQL refers to datatypes
-   protected String[] strDataType = {"VARCHAR", "BOOL", "INT", "DOUBLE"};
+   protected String[] strDataType = {"VARCHAR", "BIT", "INT", "DOUBLE"};
    protected StringBuffer sb;
 
    public CreateDDLSQL(EdgeTable[] inputTables, EdgeField[] inputFields) {
