@@ -1,0 +1,23 @@
+<database>
+	<table name = "STUDENT">
+		<attribute name = "STUDENTNAME"/>
+		<attribute name = "STUDENTSSN"/>
+	</table>
+	
+	<table name = "FACULTY">
+		<attribute name = "FACULTYNAME"/>
+		<attribute name = "FACULTYSSN"/>
+	</table>
+	
+	<table name = "COURSES">
+		<attribute name = "COURSENUM"/>
+		<attribute name = "COURSENAME"/>
+	</table>
+	
+	<table name = "STUDENT_GRADES">
+		<attribute name = "STUDENTSSN"/>
+		<attribute name = "COURSENUM"/>
+		<attribute name = "GRADE"/>
+	</table>
+	
+</database>
