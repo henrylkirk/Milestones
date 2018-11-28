@@ -6,9 +6,9 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.*;
 
 @RunWith(Parameterized.class)
-public class EdgeConnectorTest {
+public class ConnectorTest {
 
-    private EdgeConnector ec;
+    private Connector ec;
     private StringBuilder sb = new StringBuilder();
     private static final String DELIM = ",";
 
@@ -24,7 +24,7 @@ public class EdgeConnectorTest {
 
     private static Object[][] testObjects;
 
-    public EdgeConnectorTest(int testNum, int testPoint1, int testPoint2, String testStyle1, String testStyle2){
+    public ConnectorTest(int testNum, int testPoint1, int testPoint2, String testStyle1, String testStyle2){
       super();
       this.testNum = testNum;
       this.testPoint1 = testPoint1;
@@ -33,17 +33,17 @@ public class EdgeConnectorTest {
       this.testStyle2 = testStyle2;
       String inputString = testNum + DELIM + testPoint1 + DELIM + testPoint2 + DELIM + testStyle1 + DELIM + testStyle2;
       System.out.println(inputString);
-      ec = new EdgeConnector(inputString);
+      ec = new Connector(inputString);
     }
 
     // Accepts test objects
     public static void prepare(Object[][] testObjects) {
-        EdgeConnectorTest.testObjects = testObjects;
+        ConnectorTest.testObjects = testObjects;
     }
 
     @Parameterized.Parameters
     public static Collection input() {
-        return Arrays.asList(EdgeConnectorTest.testObjects);
+        return Arrays.asList(ConnectorTest.testObjects);
     }
 
     @Test
