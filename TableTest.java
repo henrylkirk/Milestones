@@ -3,11 +3,11 @@ import org.junit.Test;
 import org.junit.Before;
 import java.io.*;
 
-public class EdgeTableTest {
+public class TableTest {
 
     private EdgeConvertFileParser ecfp;
     private File parseFile;
-    private EdgeTable testTable;
+    private Table testTable;
 
     private static final String DELIM = "|";
     private static final int NUM = 99;
@@ -15,7 +15,7 @@ public class EdgeTableTest {
 
     @Before
     public void setUp() {
-        testTable = new EdgeTable(NUM+DELIM+NAME);
+        testTable = new Table(NUM+DELIM+NAME);
         testTable.makeArrays();
     }
 
@@ -44,7 +44,7 @@ public class EdgeTableTest {
     public void testRelatedFields() {
         File parseFile = new File("Courses.edg");
         EdgeConvertFileParser ecfp = new EdgeConvertFileParser(parseFile);
-        testTable = ecfp.getEdgeTables()[0];
+        testTable = ecfp.getTables()[0];
         testTable.makeArrays();
         testTable.setRelatedField(0,992);
         int[] relatedFields = testTable.getRelatedFieldsArray();

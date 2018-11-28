@@ -9,9 +9,9 @@ public class EdgeConvertFileParser {
    private String currentLine;
    private ArrayList alTables, alFields, alConnectors;
    private Table[] tables;
-   private EdgeField[] fields;
-   private EdgeField tempField;
-   private EdgeConnector[] connectors;
+   private Field[] fields;
+   private Field tempField;
+   private Connector[] connectors;
    private String style;
    private String text;
    private String tableName;
@@ -90,8 +90,8 @@ public class EdgeConvertFileParser {
                   }
                   alTables.add(new Table(numFigure + DELIM + text));
                }
-               if (isAttribute) { //create a new EdgeField object and add it to the alFields ArrayList
-                  tempField = new EdgeField(numFigure + DELIM + text);
+               if (isAttribute) { //create a new Field object and add it to the alFields ArrayList
+                  tempField = new Field(numFigure + DELIM + text);
                   tempField.setIsPrimaryKey(isUnderlined);
                   alFields.add(tempField);
                }
@@ -122,7 +122,7 @@ public class EdgeConvertFileParser {
                currentLine = br.readLine().trim();
             } while (!currentLine.equals("}")); // this is the end of a Connector entry
 
-            alConnectors.add(new EdgeConnector(numConnector + DELIM + endPoint1 + DELIM + endPoint2 + DELIM + endStyle1 + DELIM + endStyle2));
+            alConnectors.add(new Connector(numConnector + DELIM + endPoint1 + DELIM + endPoint2 + DELIM + endStyle1 + DELIM + endStyle2));
          } // if("Connector")
       } // while()
    } // parseEdgeFile()
@@ -193,7 +193,7 @@ public class EdgeConvertFileParser {
    public void parseSaveFile() throws IOException { //this method is fucked
       StringTokenizer stTables, stNatFields, stRelFields, stNatRelFields, stField;
       Table tempTable;
-      EdgeField tempField;
+      Field tempField;
       currentLine = br.readLine();
       currentLine = br.readLine(); //this should be "Table: "
       while (currentLine.startsWith("Table: ")) {
@@ -235,7 +235,7 @@ public class EdgeConvertFileParser {
          stField = new StringTokenizer(currentLine, DELIM);
          numFigure = Integer.parseInt(stField.nextToken());
          fieldName = stField.nextToken();
-         tempField = new EdgeField(numFigure + DELIM + fieldName);
+         tempField = new Field(numFigure + DELIM + fieldName);
          tempField.setTableID(Integer.parseInt(stField.nextToken()));
          tempField.setTableBound(Integer.parseInt(stField.nextToken()));
          tempField.setFieldBound(Integer.parseInt(stField.nextToken()));
@@ -255,10 +255,10 @@ public class EdgeConvertFileParser {
          tables = (Table[])alTables.toArray(new Table[alTables.size()]);
       }
       if (alFields != null) {
-         fields = (EdgeField[])alFields.toArray(new EdgeField[alFields.size()]);
+         fields = (Field[])alFields.toArray(new Field[alFields.size()]);
       }
       if (alConnectors != null) {
-         connectors = (EdgeConnector[])alConnectors.toArray(new EdgeConnector[alConnectors.size()]);
+         connectors = (Connector[])alConnectors.toArray(new Connector[alConnectors.size()]);
       }
    }
 
@@ -276,7 +276,7 @@ public class EdgeConvertFileParser {
       return tables;
    }
 
-   public EdgeField[] getEdgeFields() {
+   public Field[] getFields() {
       return fields;
    }
 
