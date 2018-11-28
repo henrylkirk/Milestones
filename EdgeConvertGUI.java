@@ -17,22 +17,22 @@ public class EdgeConvertGUI {
    public static final String DEFINE_RELATIONS = "Define Relations";
    public static final String CANCELLED = "CANCELLED";
    private static JFileChooser jfcEdge, jfcGetClass, jfcOutputDir;
-   private static ExampleFileFilter effEdge, effSave, effClass;
+   private static ExampleFileFilter effEdge, effSave, effClass, effXML;
    private File parseFile, saveFile, outputFile, outputDir, outputDirOld;
    private String truncatedFilename;
    private String sqlString;
    private String databaseName;
-   EdgeMenuListener menuListener;
+   MenuListener menuListener;
    EdgeRadioButtonListener radioListener;
    EdgeWindowListener edgeWindowListener;
    CreateDDLButtonListener createDDLListener;
    private EdgeConvertFileParser ecfp;
    private EdgeConvertCreateDDL eccd;
    private static PrintWriter pw;
-   private EdgeTable[] tables; //master copy of EdgeTable objects
-   private EdgeField[] fields; //master copy of EdgeField objects
-   private EdgeTable currentDTTable, currentDRTable1, currentDRTable2; //pointers to currently selected table(s) on Define Tables (DT) and Define Relations (DR) screens
-   private EdgeField currentDTField, currentDRField1, currentDRField2; //pointers to currently selected field(s) on Define Tables (DT) and Define Relations (DR) screens
+   private Table[] tables; //master copy of Table objects
+   private Field[] fields; //master copy of Field objects
+   private Table currentDTTable, currentDRTable1, currentDRTable2; //pointers to currently selected table(s) on Define Tables (DT) and Define Relations (DR) screens
+   private Field currentDTField, currentDRField1, currentDRField2; //pointers to currently selected field(s) on Define Tables (DT) and Define Relations (DR) screens
    private static boolean readSuccess = true; //this tells GUI whether to populate JList components or not
    private boolean dataSaved = true;
    private ArrayList alSubclasses, alProductNames;
@@ -54,7 +54,7 @@ public class EdgeConvertGUI {
    static DefaultListModel dlmDTTablesAll, dlmDTFieldsTablesAll;
    static JMenuBar jmbDTMenuBar;
    static JMenu jmDTFile, jmDTOptions, jmDTHelp;
-   static JMenuItem jmiDTOpenEdge, jmiDTOpenSave, jmiDTSave, jmiDTSaveAs, jmiDTExit, jmiDTOptionsOutputLocation, jmiDTOptionsShowProducts, jmiDTHelpAbout;
+   static JMenuItem jmiDTOpenEdge, jmiDTOpenXML, jmiDTOpenSave, jmiDTSave, jmiDTSaveAs, jmiDTExit, jmiDTOptionsOutputLocation, jmiDTOptionsShowProducts, jmiDTHelpAbout;
 
    //Define Relations screen objects
    static JFrame jfDR;
@@ -66,11 +66,11 @@ public class EdgeConvertGUI {
    static JScrollPane jspDRTablesRelations, jspDRTablesRelatedTo, jspDRFieldsTablesRelations, jspDRFieldsTablesRelatedTo;
    static JMenuBar jmbDRMenuBar;
    static JMenu jmDRFile, jmDROptions, jmDRHelp;
-   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout;
+   static JMenuItem jmiDROpenEdge, jmiDROpenXML, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout;
    private JTabbedPane tabbedHelpPane;
 
    public EdgeConvertGUI() {
-      menuListener = new EdgeMenuListener();
+      menuListener = new MenuListener();
       radioListener = new EdgeRadioButtonListener();
       edgeWindowListener = new EdgeWindowListener();
       createDDLListener = new CreateDDLButtonListener();
@@ -107,6 +107,9 @@ public class EdgeConvertGUI {
       jmiDTOpenEdge = new JMenuItem("Open Edge File");
       jmiDTOpenEdge.setMnemonic(KeyEvent.VK_E);
       jmiDTOpenEdge.addActionListener(menuListener);
+      jmiDTOpenXML = new JMenuItem("Open XML File");
+      jmiDTOpenXML.setMnemonic(KeyEvent.VK_E);
+      jmiDTOpenXML.addActionListener(menuListener);
       jmiDTOpenSave = new JMenuItem("Open Save File");
       jmiDTOpenSave.setMnemonic(KeyEvent.VK_V);
       jmiDTOpenSave.addActionListener(menuListener);
@@ -122,6 +125,7 @@ public class EdgeConvertGUI {
       jmiDTExit.setMnemonic(KeyEvent.VK_X);
       jmiDTExit.addActionListener(menuListener);
       jmDTFile.add(jmiDTOpenEdge);
+      jmDTFile.add(jmiDTOpenXML);
       jmDTFile.add(jmiDTOpenSave);
       jmDTFile.add(jmiDTSave);
       jmDTFile.add(jmiDTSaveAs);
@@ -151,6 +155,7 @@ public class EdgeConvertGUI {
       jfcEdge = new JFileChooser();
       jfcOutputDir = new JFileChooser();
 	  effEdge = new ExampleFileFilter("edg", "Edge Diagrammer Files");
+      effXML = new ExampleFileFilter("xml", "XML Files");
    	  effSave = new ExampleFileFilter("sav", "Edge Convert Save Files");
       jfcOutputDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
@@ -295,7 +300,7 @@ public class EdgeConvertGUI {
       jpDTCenter.add(jpDTCenter2);
       jpDTCenter.add(jpDTCenterRight);
 
-      strDataType = EdgeField.getStrDataType(); //get the list of currently supported data types
+      strDataType = Field.getStrDataType(); //get the list of currently supported data types
       jrbDataType = new JRadioButton[strDataType.length]; //create array of JRadioButtons, one for each supported data type
       bgDTDataType = new ButtonGroup();
       jpDTCenterRight1 = new JPanel(new GridLayout(strDataType.length, 1));
@@ -435,7 +440,7 @@ public class EdgeConvertGUI {
                try {
                   if (result.length() > 5) {
                      JOptionPane.showMessageDialog(null, "Varchar length must be greater than 0 and less than or equal to 65535.");
-                     jtfDTVarchar.setText(Integer.toString(EdgeField.VARCHAR_DEFAULT_LENGTH));
+                     jtfDTVarchar.setText(Integer.toString(Field.VARCHAR_DEFAULT_LENGTH));
                      return;
                   }
                   varchar = Integer.parseInt(result);
@@ -444,12 +449,12 @@ public class EdgeConvertGUI {
                      currentDTField.setVarcharValue(varchar);
                   } else {
                      JOptionPane.showMessageDialog(null, "Varchar length must be greater than 0 and less than or equal to 65535.");
-                     jtfDTVarchar.setText(Integer.toString(EdgeField.VARCHAR_DEFAULT_LENGTH));
+                     jtfDTVarchar.setText(Integer.toString(Field.VARCHAR_DEFAULT_LENGTH));
                      return;
                   }
                } catch (NumberFormatException nfe) {
                   JOptionPane.showMessageDialog(null, "\"" + result + "\" is not a number");
-                  jtfDTVarchar.setText(Integer.toString(EdgeField.VARCHAR_DEFAULT_LENGTH));
+                  jtfDTVarchar.setText(Integer.toString(Field.VARCHAR_DEFAULT_LENGTH));
                   return;
                }
                dataSaved = false;
@@ -982,7 +987,7 @@ public class EdgeConvertGUI {
    private void getOutputClasses() {
       File[] resultFiles;
       Class resultClass = null;
-      Class[] paramTypes = {EdgeTable[].class, EdgeField[].class};
+      Class[] paramTypes = {Table[].class, Field[].class};
       Class[] paramTypesNull = {};
       Constructor conResultClass;
       Object[] args = {tables, fields};
@@ -1110,7 +1115,7 @@ public class EdgeConvertGUI {
             }
          }
          if (jrbDataType[0].isSelected()) {
-            jtfDTVarchar.setText(Integer.toString(EdgeField.VARCHAR_DEFAULT_LENGTH));
+            jtfDTVarchar.setText(Integer.toString(Field.VARCHAR_DEFAULT_LENGTH));
             jbDTVarchar.setEnabled(true);
          } else {
             jtfDTVarchar.setText("");
@@ -1164,7 +1169,7 @@ public class EdgeConvertGUI {
             JOptionPane.showMessageDialog(null, "Please select the directory running EdgeCovert");
             setOutputDir();
          }
-         getOutputClasses(); //in case outputDir was set before a file was loaded and EdgeTable/EdgeField objects created
+         getOutputClasses(); //in case outputDir was set before a file was loaded and Table/Field objects created
          sqlString = getSQLStatements();
          if (sqlString.equals(EdgeConvertGUI.CANCELLED)) {
             return;
@@ -1173,9 +1178,10 @@ public class EdgeConvertGUI {
       }
    }
 
-   class EdgeMenuListener implements ActionListener {
+   class MenuListener implements ActionListener {
       public void actionPerformed(ActionEvent ae) {
          int returnVal;
+         // Open Edge file
          if ((ae.getSource() == jmiDTOpenEdge) || (ae.getSource() == jmiDROpenEdge)) {
             if (!dataSaved) {
                int answer = JOptionPane.showConfirmDialog(null, "You currently have unsaved data. Continue?",
@@ -1189,11 +1195,11 @@ public class EdgeConvertGUI {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                parseFile = jfcEdge.getSelectedFile();
                ecfp = new EdgeConvertFileParser(parseFile);
-               tables = ecfp.getEdgeTables();
+               tables = ecfp.getTables();
                for (int i = 0; i < tables.length; i++) {
                   tables[i].makeArrays();
                }
-               fields = ecfp.getEdgeFields();
+               fields = ecfp.getFields();
                ecfp = null;
                populateLists();
                saveFile = null;
@@ -1215,6 +1221,47 @@ public class EdgeConvertGUI {
             dataSaved = true;
          }
 
+         // Open XML file
+         if ((ae.getSource() == jmiDTOpenXML) || (ae.getSource() == jmiDROpenXML)) {
+            if (!dataSaved) {
+               int answer = JOptionPane.showConfirmDialog(null, "You currently have unsaved data. Continue?",
+                                                          "Are you sure?", JOptionPane.YES_NO_OPTION);
+               if (answer != JOptionPane.YES_OPTION) {
+                  return;
+               }
+            }
+            jfcEdge.addChoosableFileFilter(effXML);
+            returnVal = jfcEdge.showOpenDialog(null);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+               parseFile = jfcEdge.getSelectedFile();
+               ecfp = new EdgeConvertFileParser(parseFile);
+               tables = ecfp.getTables();
+               for (int i = 0; i < tables.length; i++) {
+                  tables[i].makeArrays();
+               }
+               fields = ecfp.getFields();
+               ecfp = null;
+               populateLists();
+               saveFile = null;
+               jmiDTSave.setEnabled(false);
+               jmiDRSave.setEnabled(false);
+               jmiDTSaveAs.setEnabled(true);
+               jmiDRSaveAs.setEnabled(true);
+               jbDTDefineRelations.setEnabled(true);
+
+               jbDTCreateDDL.setEnabled(true);
+               jbDRCreateDDL.setEnabled(true);
+
+               truncatedFilename = parseFile.getName().substring(parseFile.getName().lastIndexOf(File.separator) + 1);
+               jfDT.setTitle(DEFINE_TABLES + " - " + truncatedFilename);
+               jfDR.setTitle(DEFINE_RELATIONS + " - " + truncatedFilename);
+            } else {
+               return;
+            }
+            dataSaved = true;
+         }
+
+         // Open save file
          if ((ae.getSource() == jmiDTOpenSave) || (ae.getSource() == jmiDROpenSave)) {
             if (!dataSaved) {
                int answer = JOptionPane.showConfirmDialog(null, "You currently have unsaved data. Continue?",
@@ -1228,8 +1275,8 @@ public class EdgeConvertGUI {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                saveFile = jfcEdge.getSelectedFile();
                ecfp = new EdgeConvertFileParser(saveFile);
-               tables = ecfp.getEdgeTables();
-               fields = ecfp.getEdgeFields();
+               tables = ecfp.getTables();
+               fields = ecfp.getFields();
                ecfp = null;
                populateLists();
                parseFile = null;
@@ -1302,6 +1349,6 @@ public class EdgeConvertGUI {
             helpFrame.pack(); //Display the window.
             helpFrame.setVisible(true);
          }
-      } // EdgeMenuListener.actionPerformed()
-   } // EdgeMenuListener
+      } // MenuListener.actionPerformed()
+   } // MenuListener
 } // EdgeConvertGUI

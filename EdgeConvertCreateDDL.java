@@ -7,18 +7,18 @@ import java.util.*;
 
 public abstract class EdgeConvertCreateDDL {
    static String[] products = {"MySQL","SQL"};
-   protected EdgeTable[] tables; //master copy of EdgeTable objects
-   protected EdgeField[] fields; //master copy of EdgeField objects
+   protected Table[] tables; //master copy of Table objects
+   protected Field[] fields; //master copy of Field objects
    protected int[] numBoundTables;
    protected int maxBound;
    protected StringBuffer sb;
    protected int selected;
 
-   public EdgeConvertCreateDDL(EdgeTable[] tables, EdgeField[] fields) {
+   public EdgeConvertCreateDDL(Table[] tables, Field[] fields) {
       this.tables = tables;
       this.fields = fields;
       initialize();
-   } //EdgeConvertCreateDDL(EdgeTable[], EdgeField[])
+   } //EdgeConvertCreateDDL(Table[], Field[])
 
    public EdgeConvertCreateDDL() { //default constructor with empty arg list for to allow output dir to be set before there are table and field objects
 
@@ -44,7 +44,7 @@ public abstract class EdgeConvertCreateDDL {
       }
    }
 
-   protected EdgeTable getTable(int numFigure) {
+   protected Table getTable(int numFigure) {
       for (int tIndex = 0; tIndex < tables.length; tIndex++) {
          if (numFigure == tables[tIndex].getNumFigure()) {
             return tables[tIndex];
@@ -53,7 +53,7 @@ public abstract class EdgeConvertCreateDDL {
       return null;
    }
 
-   protected EdgeField getField(int numFigure) {
+   protected Field getField(int numFigure) {
       for (int fIndex = 0; fIndex < fields.length; fIndex++) {
          if (numFigure == fields[fIndex].getNumFigure()) {
             return fields[fIndex];
