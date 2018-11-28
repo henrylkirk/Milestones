@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 
-public class EdgeConvertFileParser {
+public class FileConvertFileParser {
    private File parseFile;
    private FileReader fr;
    private BufferedReader br;
@@ -22,10 +22,11 @@ public class EdgeConvertFileParser {
    private int numLine;
    private String endStyle1, endStyle2;
    public static final String EDGE_ID = "EDGE Diagram File"; //first line of .edg files should be this
+   public static final String XML_ID = "XML File"; //first line of xml files should be this
    public static final String SAVE_ID = "EdgeConvert Save File"; //first line of save files should be this
    public static final String DELIM = "|";
 
-   public EdgeConvertFileParser(File constructorFile) {
+   public FileConvertFileParser(File constructorFile) {
       numFigure = 0;
       numConnector = 0;
       alTables = new ArrayList();
@@ -37,6 +38,12 @@ public class EdgeConvertFileParser {
       numLine = 0;
       this.openFile(parseFile);
    }
+
+   public void parseXMLFile() throws IOException {
+       while ((currentLine = br.readLine()) != null) {
+          currentLine = currentLine.trim();
+       } // while
+   } // parseXMLFile()
 
    public void parseEdgeFile() throws IOException {
       while ((currentLine = br.readLine()) != null) {
@@ -51,7 +58,7 @@ public class EdgeConvertFileParser {
                style = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the Style parameter
                if (style.startsWith("Relation")) { //presence of Relations implies lack of normalization
                   JOptionPane.showMessageDialog(null, "The Edge Diagrammer file\n" + parseFile + "\ncontains relations.  Please resolve them and try again.");
-                  EdgeConvertGUI.setReadSuccess(false);
+                  FileConvertGUI.setReadSuccess(false);
                   break;
                }
                if (style.startsWith("Entity")) {
@@ -67,7 +74,7 @@ public class EdgeConvertFileParser {
                text = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")).replaceAll(" ", ""); //get the Text parameter
                if (text.equals("")) {
                   JOptionPane.showMessageDialog(null, "There are entities or attributes with blank names in this diagram.\nPlease provide names for them and try again.");
-                  EdgeConvertGUI.setReadSuccess(false);
+                  FileConvertGUI.setReadSuccess(false);
                   break;
                }
                int escape = text.indexOf("\\");
@@ -85,7 +92,7 @@ public class EdgeConvertFileParser {
                if (isEntity) { //create a new Table object and add it to the alTables ArrayList
                   if (isTableDup(text)) {
                      JOptionPane.showMessageDialog(null, "There are multiple tables called " + text + " in this diagram.\nPlease rename all but one of them and try again.");
-                     EdgeConvertGUI.setReadSuccess(false);
+                     FileConvertGUI.setReadSuccess(false);
                      break;
                   }
                   alTables.add(new Table(numFigure + DELIM + text));
@@ -157,7 +164,7 @@ public class EdgeConvertFileParser {
 
          if (connectors[cIndex].getIsEP1Field() && connectors[cIndex].getIsEP2Field()) { //both endpoints are fields, implies lack of normalization
             JOptionPane.showMessageDialog(null, "The Edge Diagrammer file\n" + parseFile + "\ncontains composite attributes. Please resolve them and try again.");
-            EdgeConvertGUI.setReadSuccess(false); //this tells GUI not to populate JList components
+            FileConvertGUI.setReadSuccess(false); //this tells GUI not to populate JList components
             break; //stop processing list of Connectors
          }
 
@@ -165,7 +172,7 @@ public class EdgeConvertFileParser {
             if ((connectors[cIndex].getEndStyle1().indexOf("many") >= 0) &&
                 (connectors[cIndex].getEndStyle2().indexOf("many") >= 0)) { //the connector represents a many-many relationship, implies lack of normalization
                JOptionPane.showMessageDialog(null, "There is a many-many relationship between tables\n\"" + tables[table1Index].getName() + "\" and \"" + tables[table2Index].getName() + "\"" + "\nPlease resolve this and try again.");
-               EdgeConvertGUI.setReadSuccess(false); //this tells GUI not to populate JList components
+               FileConvertGUI.setReadSuccess(false); //this tells GUI not to populate JList components
                break; //stop processing list of Connectors
             } else { //add Figure number to each table's list of related tables
                tables[table1Index].addRelatedTable(tables[table2Index].getNumFigure());
@@ -184,7 +191,7 @@ public class EdgeConvertFileParser {
             }
          } else if (fieldIndex >=0) { //field has already been assigned to a table
             JOptionPane.showMessageDialog(null, "The attribute " + fields[fieldIndex].getName() + " is connected to multiple tables.\nPlease resolve this and try again.");
-            EdgeConvertGUI.setReadSuccess(false); //this tells GUI not to populate JList components
+            FileConvertGUI.setReadSuccess(false); //this tells GUI not to populate JList components
             break; //stop processing list of Connectors
          }
       } // connectors for() loop
@@ -292,6 +299,11 @@ public class EdgeConvertFileParser {
             br.close();
             this.makeArrays(); //convert ArrayList objects into arrays of the appropriate Class type
             this.resolveConnectors(); //Identify nature of Connector endpoints
+        } else if (currentLine.startsWith(XML_ID)) { //the file chosen is an XML file
+           this.parseXMLFile(); //parse the file
+           br.close();
+           this.makeArrays(); //convert ArrayList objects into arrays of the appropriate Class type
+           this.resolveConnectors(); //Identify nature of Connector endpoints
          } else {
             if (currentLine.startsWith(SAVE_ID)) { //the file chosen is a Save file created by this application
                this.parseSaveFile(); //parse the file
@@ -311,4 +323,4 @@ public class EdgeConvertFileParser {
          System.exit(0);
       } // catch IOException
    } // openFile()
-} // EdgeConvertFileHandler
+} // FileConvertFileHandler

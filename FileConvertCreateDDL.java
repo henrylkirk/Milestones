@@ -5,7 +5,7 @@ import javax.swing.event.*;
 import java.io.*;
 import java.util.*;
 
-public abstract class EdgeConvertCreateDDL {
+public abstract class FileConvertCreateDDL {
    static String[] products = {"MySQL","SQL"};
    protected Table[] tables; //master copy of Table objects
    protected Field[] fields; //master copy of Field objects
@@ -14,15 +14,15 @@ public abstract class EdgeConvertCreateDDL {
    protected StringBuffer sb;
    protected int selected;
 
-   public EdgeConvertCreateDDL(Table[] tables, Field[] fields) {
+   public FileConvertCreateDDL(Table[] tables, Field[] fields) {
       this.tables = tables;
       this.fields = fields;
       initialize();
-   } //EdgeConvertCreateDDL(Table[], Field[])
+  } //FileConvertCreateDDL(Table[], Field[])
 
-   public EdgeConvertCreateDDL() { //default constructor with empty arg list for to allow output dir to be set before there are table and field objects
+   public FileConvertCreateDDL() { //default constructor with empty arg list for to allow output dir to be set before there are table and field objects
 
-   } //EdgeConvertCreateDDL()
+   } //FileConvertCreateDDL()
 
    public void initialize() {
       numBoundTables = new int[tables.length];
@@ -70,4 +70,4 @@ public abstract class EdgeConvertCreateDDL {
 
    public abstract void createDDL();
 
-}//EdgeConvertCreateDDL
+}//FileConvertCreateDDL

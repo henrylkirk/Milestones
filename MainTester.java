@@ -31,8 +31,8 @@ public class MainTester {
         String testStyle2 = st.nextToken();
 
         // Pass object to test class
-        EdgeConnectorTest.prepare(new Object[][]{{testNum,testPoint1,testPoint2,testStyle1,testStyle2}});
-        Result result = JUnitCore.runClasses(EdgeConnectorTest.class);
+        ConnectorTest.prepare(new Object[][]{{testNum,testPoint1,testPoint2,testStyle1,testStyle2}});
+        Result result = JUnitCore.runClasses(ConnectorTest.class);
         for (Failure failure : result.getFailures()) {
           System.out.println(failure.toString());
         }
@@ -61,9 +61,9 @@ public class MainTester {
         String[] values = {}; // to store test object parameters
         while((line = br.readLine()) != null) {
             values = line.split(",");
-            if(values.length == 5){ // EdgeConnector
+            if(values.length == 5){ // Connector
                 testObjects = appendArrays(testObjects,new Object[][]{{Integer.parseInt(values[0]),Integer.parseInt(values[1]),Integer.parseInt(values[2]),values[3],values[4]}});
-            } else if(values.length == 2) { // EdgeField
+            } else if(values.length == 2) { // Field
                 testObjects = appendArrays(testObjects,new Object[][]{{Integer.parseInt(values[0]),values[1]}});
             }
         }
@@ -72,17 +72,17 @@ public class MainTester {
         br.close();
 
         // Run test class depending on number of values
-        if(values.length == 5){ // EdgeConnector
+        if(values.length == 5){ // Connector
             // Pass objects to test class
-            EdgeConnectorTest.prepare(testObjects);
-            Result result = JUnitCore.runClasses(EdgeConnectorTest.class);
+            ConnectorTest.prepare(testObjects);
+            Result result = JUnitCore.runClasses(ConnectorTest.class);
             for (Failure failure : result.getFailures()) {
               System.out.println(failure.toString());
             }
-        } else if(values.length == 2) { // EdgeField
+        } else if(values.length == 2) { // Field
             // Pass objects to test class
-            EdgeFieldTest.prepare(testObjects);
-            Result result = JUnitCore.runClasses(EdgeFieldTest.class);
+            FieldTest.prepare(testObjects);
+            Result result = JUnitCore.runClasses(FieldTest.class);
             for (Failure failure : result.getFailures()) {
               System.out.println(failure.toString());
             }

@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 import java.lang.reflect.*;
 
-public class EdgeConvertGUI {
+public class FileConvertGUI {
 
    public static final int HORIZ_SIZE = 635;
    public static final int VERT_SIZE = 400;
@@ -23,11 +23,11 @@ public class EdgeConvertGUI {
    private String sqlString;
    private String databaseName;
    MenuListener menuListener;
-   EdgeRadioButtonListener radioListener;
-   EdgeWindowListener edgeWindowListener;
+   RadioButtonListener radioListener;
+   FileConvertWindowListener windowListener;
    CreateDDLButtonListener createDDLListener;
-   private EdgeConvertFileParser ecfp;
-   private EdgeConvertCreateDDL eccd;
+   private FileConvertFileParser ecfp;
+   private FileConvertCreateDDL eccd;
    private static PrintWriter pw;
    private Table[] tables; //master copy of Table objects
    private Field[] fields; //master copy of Field objects
@@ -69,13 +69,13 @@ public class EdgeConvertGUI {
    static JMenuItem jmiDROpenEdge, jmiDROpenXML, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout;
    private JTabbedPane tabbedHelpPane;
 
-   public EdgeConvertGUI() {
+   public FileConvertGUI() {
       menuListener = new MenuListener();
-      radioListener = new EdgeRadioButtonListener();
-      edgeWindowListener = new EdgeWindowListener();
+      radioListener = new RadioButtonListener();
+      windowListener = new FileConvertWindowListener();
       createDDLListener = new CreateDDLButtonListener();
       this.showGUI();
-   } // EdgeConvertGUI.EdgeConvertGUI()
+  } // FileConvertGUI.FileConvertGUI()
 
    public void showGUI() {
       try {
@@ -92,7 +92,7 @@ public class EdgeConvertGUI {
       jfDT.setLocation(HORIZ_LOC, VERT_LOC);
       Container cp = jfDT.getContentPane();
       jfDT.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-      jfDT.addWindowListener(edgeWindowListener);
+      jfDT.addWindowListener(windowListener);
       jfDT.getContentPane().setLayout(new BorderLayout());
       jfDT.setVisible(true);
       jfDT.setSize(HORIZ_SIZE + 150, VERT_SIZE);
@@ -484,7 +484,7 @@ public class EdgeConvertGUI {
       jfDR.setSize(HORIZ_SIZE, VERT_SIZE);
       jfDR.setLocation(HORIZ_LOC, VERT_LOC);
       jfDR.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-      jfDR.addWindowListener(edgeWindowListener);
+      jfDR.addWindowListener(windowListener);
       jfDR.getContentPane().setLayout(new BorderLayout());
 
       //setup menubars and menus
@@ -921,7 +921,7 @@ public class EdgeConvertGUI {
          try {
             pw = new PrintWriter(new BufferedWriter(new FileWriter(saveFile, false)));
             //write the identification line
-            pw.println(EdgeConvertFileParser.SAVE_ID);
+            pw.println(FileConvertFileParser.SAVE_ID);
             //write the tables
             pw.println("#Tables#");
             for (int i = 0; i < tables.length; i++) {
@@ -1003,7 +1003,7 @@ public class EdgeConvertGUI {
                continue; //ignore all files that are not .class files
             }
             resultClass = Class.forName(resultFiles[i].getName().substring(0, resultFiles[i].getName().lastIndexOf(".")));
-            if (resultClass.getSuperclass().getName().equals("EdgeConvertCreateDDL")) { //only interested in classes that extend EdgeConvertCreateDDL
+            if (resultClass.getSuperclass().getName().equals("FileConvertCreateDDL")) { //only interested in classes that extend FileConvertCreateDDL
                if (parseFile == null && saveFile == null) {
                   conResultClass = resultClass.getConstructor(paramTypesNull);
                   } else {
@@ -1045,7 +1045,7 @@ public class EdgeConvertGUI {
                     null);
 
       if (response == null) {
-         return EdgeConvertGUI.CANCELLED;
+         return FileConvertGUI.CANCELLED;
       }
 
       int selected;
@@ -1106,7 +1106,7 @@ public class EdgeConvertGUI {
       }
    }
 
-   class EdgeRadioButtonListener implements ActionListener {
+   class RadioButtonListener implements ActionListener {
       public void actionPerformed(ActionEvent ae) {
          for (int i = 0; i < jrbDataType.length; i++) {
             if (jrbDataType[i].isSelected()) {
@@ -1127,7 +1127,7 @@ public class EdgeConvertGUI {
       }
    }
 
-   class EdgeWindowListener implements WindowListener {
+   class FileConvertWindowListener implements WindowListener {
       public void windowActivated(WindowEvent we) {}
       public void windowClosed(WindowEvent we) {}
       public void windowDeactivated(WindowEvent we) {}
@@ -1171,7 +1171,7 @@ public class EdgeConvertGUI {
          }
          getOutputClasses(); //in case outputDir was set before a file was loaded and Table/Field objects created
          sqlString = getSQLStatements();
-         if (sqlString.equals(EdgeConvertGUI.CANCELLED)) {
+         if (sqlString.equals(FileConvertGUI.CANCELLED)) {
             return;
          }
          writeSQL(sqlString);
@@ -1194,7 +1194,7 @@ public class EdgeConvertGUI {
             returnVal = jfcEdge.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                parseFile = jfcEdge.getSelectedFile();
-               ecfp = new EdgeConvertFileParser(parseFile);
+               ecfp = new FileConvertFileParser(parseFile);
                tables = ecfp.getTables();
                for (int i = 0; i < tables.length; i++) {
                   tables[i].makeArrays();
@@ -1234,7 +1234,7 @@ public class EdgeConvertGUI {
             returnVal = jfcEdge.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                parseFile = jfcEdge.getSelectedFile();
-               ecfp = new EdgeConvertFileParser(parseFile);
+               ecfp = new FileConvertFileParser(parseFile);
                tables = ecfp.getTables();
                for (int i = 0; i < tables.length; i++) {
                   tables[i].makeArrays();
@@ -1274,7 +1274,7 @@ public class EdgeConvertGUI {
             returnVal = jfcEdge.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                saveFile = jfcEdge.getSelectedFile();
-               ecfp = new EdgeConvertFileParser(saveFile);
+               ecfp = new FileConvertFileParser(saveFile);
                tables = ecfp.getTables();
                fields = ecfp.getFields();
                ecfp = null;
@@ -1336,9 +1336,6 @@ public class EdgeConvertGUI {
          }
 
          if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDRHelpAbout)) {
-            // JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
-            //                                     "by Stephen A. Capperell\n" +
-            //                                     "� 2007-2008");
             // Create and display help tab pane
             JFrame helpFrame = new JFrame("Help");
             // helpFrame.setSize(HORIZ_SIZE, VERT_SIZE);
@@ -1351,4 +1348,4 @@ public class EdgeConvertGUI {
          }
       } // MenuListener.actionPerformed()
    } // MenuListener
-} // EdgeConvertGUI
+} // FileConvertGUI
