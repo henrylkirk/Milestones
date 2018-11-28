@@ -1,23 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <database>
-	<table name = "STUDENT">
-		<attribute name = "STUDENTNAME"/>
-		<attribute name = "STUDENTSSN"/>
+	<table name="STUDENT">
+		<attribute>STUDENTNAME</attribute>
+		<attribute>STUDENTSSN</attribute>
 	</table>
-	
-	<table name = "FACULTY">
-		<attribute name = "FACULTYNAME"/>
-		<attribute name = "FACULTYSSN"/>
+
+	<table name="FACULTY">
+		<attribute>FACULTYNAME</attribute>
+		<attribute>FACULTYSSN</attribute>
 	</table>
-	
-	<table name = "COURSES">
-		<attribute name = "COURSENUM"/>
-		<attribute name = "COURSENAME"/>
+
+	<table name="COURSES">
+		<attribute>COURSENUM</attribute>
+		<attribute>COURSENAME</attribute>
 	</table>
-	
-	<table name = "STUDENT_GRADES">
-		<attribute name = "STUDENTSSN"/>
-		<attribute name = "COURSENUM"/>
-		<attribute name = "GRADE"/>
+
+	<table name="STUDENT_GRADES">
+		<attribute>STUDENTSSN</attribute>
+		<attribute>COURSENUM</attribute>
+		<attribute>GRADE</attribute>
 	</table>
-	
 </database>
