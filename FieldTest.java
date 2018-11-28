@@ -6,26 +6,26 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.*;
 
 @RunWith(Parameterized.class)
-public class EdgeFieldTest {
+public class FieldTest {
 
-    private EdgeField testField;
+    private Field testField;
     private static Object[][] testObjects;
 
     private static final String DELIM = "|";
 
-    public EdgeFieldTest(int num, String name) {
+    public FieldTest(int num, String name) {
         super();
-        testField = new EdgeField(num + DELIM + name);
+        testField = new Field(num + DELIM + name);
     }
 
     // Accepts test objects
     public static void prepare(Object[][] testObjects) {
-        EdgeFieldTest.testObjects = testObjects;
+        FieldTest.testObjects = testObjects;
     }
 
     @Parameterized.Parameters
     public static Collection input() {
-        return Arrays.asList(EdgeFieldTest.testObjects);
+        return Arrays.asList(FieldTest.testObjects);
     }
 
     @Test
