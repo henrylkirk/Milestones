@@ -13,10 +13,10 @@ public class CreateDDLSQL extends EdgeConvertCreateDDL {
    protected String[] strDataType = {"VARCHAR", "BIT", "INT", "DOUBLE"};
    protected StringBuffer sb;
 
-   public CreateDDLSQL(EdgeTable[] inputTables, EdgeField[] inputFields) {
+   public CreateDDLSQL(Table[] inputTables, Field[] inputFields) {
       super(inputTables, inputFields);
       sb = new StringBuffer();
-   } //CreateDDLSQL(EdgeTable[], EdgeField[])
+   } //CreateDDLSQL(Table[], Field[])
 
    public CreateDDLSQL() { //default constructor with empty arg list for to allow output dir to be set before there are table and field objects
 
@@ -37,7 +37,7 @@ public class CreateDDLSQL extends EdgeConvertCreateDDL {
                int numPrimaryKey = 0;
                int numForeignKey = 0;
                for (int nativeFieldCount = 0; nativeFieldCount < nativeFields.length; nativeFieldCount++) { //print out the fields
-                  EdgeField currentField = getField(nativeFields[nativeFieldCount]);
+                  Field currentField = getField(nativeFields[nativeFieldCount]);
                   sb.append("\t" + currentField.getName() + " " + strDataType[currentField.getDataType()]);
                   if (currentField.getDataType() == 0) { //varchar
                      sb.append("(" + currentField.getVarcharValue() + ")"); //append varchar length in () if data type is varchar

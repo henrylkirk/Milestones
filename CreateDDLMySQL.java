@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;   
+import javax.swing.*;
 import javax.swing.event.*;
 import java.io.*;
 import java.util.*;
@@ -12,15 +12,15 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
    protected String[] strDataType = {"VARCHAR", "BOOL", "INT", "DOUBLE"};
    protected StringBuffer sb;
 
-   public CreateDDLMySQL(EdgeTable[] inputTables, EdgeField[] inputFields) {
+   public CreateDDLMySQL(Table[] inputTables, Field[] inputFields) {
       super(inputTables, inputFields);
       sb = new StringBuffer();
-   } //CreateDDLMySQL(EdgeTable[], EdgeField[])
-   
+   } //CreateDDLMySQL(Table[], Field[])
+
    public CreateDDLMySQL() { //default constructor with empty arg list for to allow output dir to be set before there are table and field objects
-      
+
    }
-   
+
    public void createDDL() {
       EdgeConvertGUI.setReadSuccess(true);
       databaseName = generateDatabaseName();
@@ -36,7 +36,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                int numPrimaryKey = 0;
                int numForeignKey = 0;
                for (int nativeFieldCount = 0; nativeFieldCount < nativeFields.length; nativeFieldCount++) { //print out the fields
-                  EdgeField currentField = getField(nativeFields[nativeFieldCount]);
+                  Field currentField = getField(nativeFields[nativeFieldCount]);
                   sb.append("\t" + currentField.getName() + " " + strDataType[currentField.getDataType()]);
                   if (currentField.getDataType() == 0) { //varchar
                      sb.append("(" + currentField.getVarcharValue() + ")"); //append varchar length in () if data type is varchar
@@ -107,7 +107,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
          return 0;
       }
    }
-   
+
    public String generateDatabaseName() { //prompts user for database name
       String dbNameDefault = "MySQLDB";
       //String databaseName = "";
@@ -131,11 +131,11 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
       } while (databaseName.equals(""));
       return databaseName;
    }
-   
+
    public String getDatabaseName() {
       return databaseName;
    }
-   
+
    public String getProductName() {
       return "MySQL";
    }
@@ -144,5 +144,5 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
       createDDL();
       return sb.toString();
    }
-   
+
 }//EdgeConvertCreateDDL
