@@ -8,7 +8,7 @@ public class Field {
    public static final int VARCHAR_DEFAULT_LENGTH = 1;
 
    public Field(String inputString) {
-      StringTokenizer st = new StringTokenizer(inputString, EdgeConvertFileParser.DELIM);
+      StringTokenizer st = new StringTokenizer(inputString, FileConvertFileParser.DELIM);
       numFigure = Integer.parseInt(st.nextToken());
       name = st.nextToken();
       tableID = 0;
@@ -101,15 +101,15 @@ public class Field {
    }
 
    public String toString() {
-      return numFigure + EdgeConvertFileParser.DELIM +
-      name + EdgeConvertFileParser.DELIM +
-      tableID + EdgeConvertFileParser.DELIM +
-      tableBound + EdgeConvertFileParser.DELIM +
-      fieldBound + EdgeConvertFileParser.DELIM +
-      dataType + EdgeConvertFileParser.DELIM +
-      varcharValue + EdgeConvertFileParser.DELIM +
-      isPrimaryKey + EdgeConvertFileParser.DELIM +
-      disallowNull + EdgeConvertFileParser.DELIM +
+      return numFigure + FileConvertFileParser.DELIM +
+      name + FileConvertFileParser.DELIM +
+      tableID + FileConvertFileParser.DELIM +
+      tableBound + FileConvertFileParser.DELIM +
+      fieldBound + FileConvertFileParser.DELIM +
+      dataType + FileConvertFileParser.DELIM +
+      varcharValue + FileConvertFileParser.DELIM +
+      isPrimaryKey + FileConvertFileParser.DELIM +
+      disallowNull + FileConvertFileParser.DELIM +
       defaultValue;
    }
 }

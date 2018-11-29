@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.*;
 
 // TODO: Change syntax to work with SQL db
-public class CreateDDLSQL extends EdgeConvertCreateDDL {
+public class CreateDDLSQL extends FileConvertCreateDDL {
 
    protected String databaseName;
    //this array is for determining how MySQL refers to datatypes
@@ -23,7 +23,7 @@ public class CreateDDLSQL extends EdgeConvertCreateDDL {
    }
 
    public void createDDL() {
-      EdgeConvertGUI.setReadSuccess(true);
+      FileConvertGUI.setReadSuccess(true);
       databaseName = generateDatabaseName();
       sb.append("CREATE DATABASE " + databaseName + ";\r\n");
       sb.append("USE " + databaseName + ";\r\n");
@@ -123,7 +123,7 @@ public class CreateDDLSQL extends EdgeConvertCreateDDL {
                        null,
                        dbNameDefault);
          if (databaseName == null) {
-            EdgeConvertGUI.setReadSuccess(false);
+            FileConvertGUI.setReadSuccess(false);
             return "";
          }
          if (databaseName.equals("")) {
@@ -146,4 +146,4 @@ public class CreateDDLSQL extends EdgeConvertCreateDDL {
       return sb.toString();
    }
 
-}//EdgeConvertCreateDDL
+}//FileConvertCreateDDL

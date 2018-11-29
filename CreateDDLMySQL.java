@@ -5,7 +5,7 @@ import javax.swing.event.*;
 import java.io.*;
 import java.util.*;
 
-public class CreateDDLMySQL extends EdgeConvertCreateDDL {
+public class CreateDDLMySQL extends FileConvertCreateDDL {
 
    protected String databaseName;
    //this array is for determining how MySQL refers to datatypes
@@ -22,7 +22,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
    }
 
    public void createDDL() {
-      EdgeConvertGUI.setReadSuccess(true);
+      FileConvertGUI.setReadSuccess(true);
       databaseName = generateDatabaseName();
       sb.append("CREATE DATABASE " + databaseName + ";\r\n");
       sb.append("USE " + databaseName + ";\r\n");
@@ -122,7 +122,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                        null,
                        dbNameDefault);
          if (databaseName == null) {
-            EdgeConvertGUI.setReadSuccess(false);
+            FileConvertGUI.setReadSuccess(false);
             return "";
          }
          if (databaseName.equals("")) {
@@ -145,4 +145,4 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
       return sb.toString();
    }
 
-}//EdgeConvertCreateDDL
+}//FileConvertCreateDDL
