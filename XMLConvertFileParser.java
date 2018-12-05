@@ -8,10 +8,10 @@ public class XMLConvertFileParser {
    private BufferedReader br;
    private String currentLine;
    private ArrayList alTables, alFields, alConnectors;
-   private EdgeTable[] tables;
-   private EdgeField[] fields;
-   private EdgeField tempField;
-   private EdgeConnector[] connectors;
+   private Table[] tables;
+   private Field[] fields;
+   private Field tempField;
+   private Connector[] connectors;
    private String style;
    private String text;
    private String tableName;
@@ -25,7 +25,7 @@ public class XMLConvertFileParser {
    public static final String SAVE_ID = "EdgeConvert Save File"; //first line of save files should be this
    public static final String DELIM = "|";
 
-   public EdgeConvertFileParser(File constructorFile) {
+   public XMLConvertFileParser(File constructorFile) {
       numFigure = 0;
       numConnector = 0;
       alTables = new ArrayList();
@@ -38,7 +38,7 @@ public class XMLConvertFileParser {
       this.openFile(parseFile);
    }
 
-   public void parseEdgeFile() throws IOException {
+   public void parseXMLFile() throws IOException {
       while ((currentLine = br.readLine()) != null) {
          currentLine = currentLine.trim();
          if (currentLine.startsWith("Figure ")) { //this is the start of a Figure entry
@@ -91,7 +91,7 @@ public class XMLConvertFileParser {
                   alTables.add(new EdgeTable(numFigure + DELIM + text));
                }
                if (isAttribute) { //create a new EdgeField object and add it to the alFields ArrayList
-                  tempField = new EdgeField(numFigure + DELIM + text);
+                  tempField = new Field(numFigure + DELIM + text);
                   tempField.setIsPrimaryKey(isUnderlined);
                   alFields.add(tempField);
                }
@@ -252,19 +252,19 @@ public class XMLConvertFileParser {
 
    private void makeArrays() { //convert ArrayList objects into arrays of the appropriate Class type
       if (alTables != null) {
-         tables = (EdgeTable[])alTables.toArray(new EdgeTable[alTables.size()]);
+         tables = (Table[])alTables.toArray(new Table[alTables.size()]);
       }
       if (alFields != null) {
-         fields = (EdgeField[])alFields.toArray(new EdgeField[alFields.size()]);
+         fields = (Field[])alFields.toArray(new Field[alFields.size()]);
       }
       if (alConnectors != null) {
-         connectors = (EdgeConnector[])alConnectors.toArray(new EdgeConnector[alConnectors.size()]);
+         connectors = (Connector[])alConnectors.toArray(new Connector[alConnectors.size()]);
       }
    }
 
    private boolean isTableDup(String testTableName) {
       for (int i = 0; i < alTables.size(); i++) {
-         EdgeTable tempTable = (EdgeTable)alTables.get(i);
+         Table tempTable = (Table)alTables.get(i);
          if (tempTable.getName().equals(testTableName)) {
             return true;
          }
@@ -272,11 +272,11 @@ public class XMLConvertFileParser {
       return false;
    }
 
-   public EdgeTable[] getEdgeTables() {
+   public Table[] getTables() {
       return tables;
    }
 
-   public EdgeField[] getEdgeFields() {
+   public Field[] getFields() {
       return fields;
    }
 
@@ -288,7 +288,7 @@ public class XMLConvertFileParser {
          currentLine = br.readLine().trim();
          numLine++;
          if (currentLine.startsWith(EDGE_ID)) { //the file chosen is an Edge Diagrammer file
-            this.parseEdgeFile(); //parse the file
+            this.parseXMLFile(); //parse the file
             br.close();
             this.makeArrays(); //convert ArrayList objects into arrays of the appropriate Class type
             this.resolveConnectors(); //Identify nature of Connector endpoints
