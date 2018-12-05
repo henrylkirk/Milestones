@@ -54,13 +54,22 @@ public class FileConvertFileParser {
          doc.getDocumentElement().normalize();
          NodeList nList = doc.getElementsByTagName("table");
        
-         for (int temp = 0; temp < nList.getLength(); temp++){
+         for (int i = 0; i < nList.getLength(); i++){
             numFigure++;
-            Node nNode = nList.item(temp);
+            Node nNode = nList.item(i);
             if(nNode.getNodeType() == Node.ELEMENT_NODE){
                Element eElement = (Element) nNode;
                alTables.add(new Table(numFigure + DELIM + eElement.getAttribute("name")));
-               
+               NodeList attrList = eElement.getElementsByTagName("attribute");
+               for(int j = 0; j < attrList.getLength(); j++){
+                 Node attrNode = attrList.item(j);
+                 if(attrNode.getNodeType() == attrNode.ELEMENT_NODE){
+                     Element attribute = (Element) attrNode;
+                     tempField = new Field(numFigure + DELIM + attribute.getTextContent());
+                     tempField.setIsPrimaryKey(isUnderlined);
+                     alFields.add(tempField);
+                 }
+               }
             }
          }
       } catch (Exception e) {
