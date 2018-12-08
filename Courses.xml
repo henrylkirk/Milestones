@@ -20,4 +20,13 @@
 		<attribute>COURSENUM</attribute>
 		<attribute>GRADE</attribute>
 	</table>
+
+	<connector id="9">
+		<figure>1</figure>
+		<figure>7</figure>
+		<end-point>448,544</end-point>
+		<end-point>333,582</end-point>
+		<end-style>null</end-style>
+		<end-style>null</end-style>
+	</connector>
 </database>
