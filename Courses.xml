@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database>
-	<table name="STUDENT">
-		<attribute>STUDENTNAME</attribute>
-		<attribute>STUDENTSSN</attribute>
+	<table name="STUDENT" id="1">
+		<attribute id="8">STUDENTNAME</attribute>
+		<attribute id = "7">STUDENTSSN</attribute>
 	</table>
 
-	<table name="FACULTY">
+	<table name="FACULTY" id="2">
 		<attribute>FACULTYNAME</attribute>
-		<attribute>FACULTYSSN</attribute>
+		<attribute id="6">FACULTYSSN</attribute>
 	</table>
 
 	<table name="COURSES">
-		<attribute>COURSENUM</attribute>
-		<attribute>COURSENAME</attribute>
+		<attribute id="5">COURSENUM</attribute>
+		<attribute id="4">COURSENAME</attribute>
 	</table>
 
 	<table name="STUDENT_GRADES">
-		<attribute>STUDENTSSN</attribute>
-		<attribute>COURSENUM</attribute>
-		<attribute>GRADE</attribute>
+		<attribute id="7">STUDENTSSN</attribute>
+		<attribute id="5">COURSENUM</attribute>
+		<attribute id="3">GRADE</attribute>
 	</table>
 
 	<connector id="9">
@@ -29,4 +29,85 @@
 		<end-style>null</end-style>
 		<end-style>null</end-style>
 	</connector>
+   
+   <connector id="10">
+      <figure>1</figure>
+	  <figure>8</figure>
+	  <end-point>459,480</end-point>
+	  <end-point>360,443</end-point>
+	  <end-style>null</end-style>
+	  <end-style>null</end-style>
+   </connector>
+   
+   <connector id="12">
+      <figure>2</figure>
+	  <figure>11</figure>
+	  <end-point>992,724</end-point>
+	  <end-point>888,714</end-point>
+	  <end-style>null</end-style>
+	  <end-style>null</end-style>
+   </connector>
+   
+   <connector id="14">
+      <figure>1</figure>
+	  <figure>15</figure>
+	  <end-point>672,512</end-point>
+	  <end-point>832,512</end-point>
+	  <end-style>ER mand many</end-style>
+	  <end-style>ER opt many</end-style>
+   </connector>
+   
+   <connector id="16">
+      <figure>15</figure>
+	  <figure>13</figure>
+	  <end-point>832,512</end-point>
+	  <end-point>992,512</end-point>
+	  <end-style>ER mand many</end-style>
+	  <end-style>ER opt many</end-style>
+   </connector>
+   
+   <connector id="20">
+      <figure>2</figure>
+	  <figure>13</figure>
+	  <end-point>1120,704</end-point>
+	  <end-point>1120,544</end-point>
+	  <end-style>ER single</end-style>
+	  <end-style>ER opt many</end-style>
+   </connector>
+   
+   <connector id="21">
+      <figure>15</figure>
+	  <figure>3</figure>
+	  <end-point>832,512</end-point>
+	  <end-point>858,384</end-point>
+	  <end-style>null</end-style>
+	  <end-style>null</end-style>
+   </connector>
+   
+   <connector id="22">
+      <figure>-1</figure>
+	  <figure>13</figure>
+	  <end-point>1120,288</end-point>
+	  <end-point>1120,480</end-point>
+	  <end-style>null</end-style>
+	  <end-style>null</end-style>
+   </connector>
+   
+   <connector id="23">
+      <figure>5</figure>
+	  <figure>13</figure>
+	  <end-point>1328,381</end-point>
+	  <end-point>1171,480</end-point>
+	  <end-style>null</end-style>
+	  <end-style>null</end-style>
+   </connector>
+   
+   <connector id="24">
+      <figure>6</figure>
+	  <figure>2</figure>
+	  <end-point>894,836</end-point>
+	  <end-point>1048,748</end-point>
+	  <end-style>null</end-style>
+	  <end-style>null</end-style>
+   </connector>
 </database>
