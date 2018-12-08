@@ -28,7 +28,7 @@ public class FileConvertFileParser {
    private int numLine;
    private String endStyle1, endStyle2;
    public static final String EDGE_ID = "EDGE Diagram File"; //first line of .edg files should be this
-   public static final String XML_ID = "XML File"; //first line of xml files should be this
+   public static final String XML_ID = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"; //first line of xml files should be this
    public static final String SAVE_ID = "EdgeConvert Save File"; //first line of save files should be this
    public static final String DELIM = "|";
 
@@ -46,14 +46,14 @@ public class FileConvertFileParser {
    }
 
    public void parseXMLFile() throws IOException {
-   
+
       try{
          DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
          DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
          Document doc = dBuilder.parse(parseFile);
          doc.getDocumentElement().normalize();
          NodeList nList = doc.getElementsByTagName("table");
-       
+
          for (int i = 0; i < nList.getLength(); i++){
             numFigure++;
             Node nNode = nList.item(i);
@@ -113,14 +113,14 @@ public class FileConvertFileParser {
                if (escape > 0) { //Edge denotes a line break as "\line", disregard anything after a backslash
                   text = text.substring(0, escape);
                }
-            
+
                do { //advance to end of record, look for whether the text is underlined
                   currentLine = br.readLine().trim();
                   if (currentLine.startsWith("TypeUnderl")) {
                      isUnderlined = true;
                   }
                } while (!currentLine.equals("}")); // this is the end of a Figure entry
-            
+
                if (isEntity) { //create a new Table object and add it to the alTables ArrayList
                   if (isTableDup(text)) {
                      JOptionPane.showMessageDialog(null, "There are multiple tables called " + text + " in this diagram.\nPlease rename all but one of them and try again.");
@@ -156,11 +156,11 @@ public class FileConvertFileParser {
             endStyle1 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End1 parameter
             currentLine = br.readLine().trim(); // End2
             endStyle2 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End2 parameter
-         
+
             do { //advance to end of record
                currentLine = br.readLine().trim();
             } while (!currentLine.equals("}")); // this is the end of a Connector entry
-         
+
             alConnectors.add(new Connector(numConnector + DELIM + endPoint1 + DELIM + endPoint2 + DELIM + endStyle1 + DELIM + endStyle2));
          } // if("Connector")
       } // while()
@@ -193,13 +193,13 @@ public class FileConvertFileParser {
                table2Index = tIndex; //identify which element of the tables array that endPoint2 was found in
             }
          }
-      
+
          if (connectors[cIndex].getIsEP1Field() && connectors[cIndex].getIsEP2Field()) { //both endpoints are fields, implies lack of normalization
             JOptionPane.showMessageDialog(null, "The Edge Diagrammer file\n" + parseFile + "\ncontains composite attributes. Please resolve them and try again.");
             FileConvertGUI.setReadSuccess(false); //this tells GUI not to populate JList components
             break; //stop processing list of Connectors
          }
-      
+
          if (connectors[cIndex].getIsEP1Table() && connectors[cIndex].getIsEP2Table()) { //both endpoints are tables
             if ((connectors[cIndex].getEndStyle1().indexOf("many") >= 0) &&
                 (connectors[cIndex].getEndStyle2().indexOf("many") >= 0)) { //the connector represents a many-many relationship, implies lack of normalization
@@ -212,7 +212,7 @@ public class FileConvertFileParser {
                continue; //next Connector
             }
          }
-      
+
          if (fieldIndex >=0 && fields[fieldIndex].getTableID() == 0) { //field has not been assigned to a table yet
             if (connectors[cIndex].getIsEP1Table()) { //endpoint1 is the table
                tables[table1Index].addNativeField(fields[fieldIndex].getNumFigure()); //add to the appropriate table's field list
@@ -241,14 +241,14 @@ public class FileConvertFileParser {
          currentLine = br.readLine(); //this should be "TableName"
          tableName = currentLine.substring(currentLine.indexOf(" ") + 1);
          tempTable = new Table(numFigure + DELIM + tableName);
-      
+
          currentLine = br.readLine(); //this should be the NativeFields list
          stNatFields = new StringTokenizer(currentLine.substring(currentLine.indexOf(" ") + 1), DELIM);
          numFields = stNatFields.countTokens();
          for (int i = 0; i < numFields; i++) {
             tempTable.addNativeField(Integer.parseInt(stNatFields.nextToken()));
          }
-      
+
          currentLine = br.readLine(); //this should be the RelatedTables list
          stTables = new StringTokenizer(currentLine.substring(currentLine.indexOf(" ") + 1), DELIM);
          numTables = stTables.countTokens();
@@ -256,15 +256,15 @@ public class FileConvertFileParser {
             tempTable.addRelatedTable(Integer.parseInt(stTables.nextToken()));
          }
          tempTable.makeArrays();
-      
+
          currentLine = br.readLine(); //this should be the RelatedFields list
          stRelFields = new StringTokenizer(currentLine.substring(currentLine.indexOf(" ") + 1), DELIM);
          numFields = stRelFields.countTokens();
-      
+
          for (int i = 0; i < numFields; i++) {
             tempTable.setRelatedField(i, Integer.parseInt(stRelFields.nextToken()));
          }
-      
+
          alTables.add(tempTable);
          currentLine = br.readLine(); //this should be "}"
          currentLine = br.readLine(); //this should be "\n"
