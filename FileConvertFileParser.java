@@ -52,13 +52,15 @@ public class FileConvertFileParser {
          DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
          Document doc = dBuilder.parse(parseFile);
          doc.getDocumentElement().normalize();
-         NodeList nList = doc.getElementsByTagName("table");
+         NodeList nListTables = doc.getElementsByTagName("table");
+         NodeList nListConnectors = doc.getElementsByTagName("connector");
 
-         for (int i = 0; i < nList.getLength(); i++){
-            numFigure++;
-            Node nNode = nList.item(i);
+         // Loop through tables
+         for (int i = 0; i < nListTables.getLength(); i++){
+            Node nNode = nListTables.item(i);
             if(nNode.getNodeType() == Node.ELEMENT_NODE){
                Element eElement = (Element) nNode;
+               numFigure = Integer.parseInt(eElement.getAttribute("id"));
                alTables.add(new Table(numFigure + DELIM + eElement.getAttribute("name")));
                NodeList attrList = eElement.getElementsByTagName("attribute");
                for(int j = 0; j < attrList.getLength(); j++){
@@ -71,6 +73,24 @@ public class FileConvertFileParser {
                  }
                }
             }
+         }
+
+         // Loop through connectors
+         for (int j = 0; j < nListConnectors.getLength(); j++){
+             Node nNode = nListConnectors.item(j);
+             if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                // get connector number
+                Element eElement = (Element) nNode;
+                numConnector = Integer.parseInt(eElement.getAttribute("id"));
+                // get end points
+                NodeList nListEndPoints = eElement.getElementsByTagName("figure");
+                endPoint1 = Integer.parseInt(nListEndPoints.item(0).getTextContent());
+                endPoint2 = Integer.parseInt(nListEndPoints.item(1).getTextContent());
+                NodeList nListEndStyles = eElement.getElementsByTagName("end-style");
+                endStyle1 = nListEndStyles.item(0).getTextContent();
+                endStyle2 = nListEndStyles.item(1).getTextContent();
+                alConnectors.add(new Connector(numConnector + DELIM + endPoint1 + DELIM + endPoint2 + DELIM + endStyle1 + DELIM + endStyle2));
+             }
          }
       } catch (Exception e) {
          e.printStackTrace();
