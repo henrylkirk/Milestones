@@ -2,7 +2,7 @@
 <database>
 	<table name="STUDENT" id="1">
 		<attribute id="8">STUDENTNAME</attribute>
-		<attribute id = "7">STUDENTSSN</attribute>
+		<attribute id="7">STUDENTSSN</attribute>
 	</table>
 
 	<table name="FACULTY" id="2">
@@ -10,15 +10,9 @@
 		<attribute id="6">FACULTYSSN</attribute>
 	</table>
 
-	<table name="COURSES">
+	<table name="COURSES" id="13">
 		<attribute id="5">COURSENUM</attribute>
 		<attribute id="4">COURSENAME</attribute>
-	</table>
-
-	<table name="STUDENT_GRADES">
-		<attribute id="7">STUDENTSSN</attribute>
-		<attribute id="5">COURSENUM</attribute>
-		<attribute id="3">GRADE</attribute>
 	</table>
 
 	<connector id="9">
@@ -27,63 +21,63 @@
 		<end-style>null</end-style>
 		<end-style>null</end-style>
 	</connector>
-   
+
    <connector id="10">
       <figure>1</figure>
 	  <figure>8</figure>
 	  <end-style>null</end-style>
 	  <end-style>null</end-style>
    </connector>
-   
+
    <connector id="12">
       <figure>2</figure>
 	  <figure>11</figure>
 	  <end-style>null</end-style>
 	  <end-style>null</end-style>
    </connector>
-   
+
    <connector id="14">
       <figure>1</figure>
 	  <figure>15</figure>
 	  <end-style>ER mand many</end-style>
 	  <end-style>ER opt many</end-style>
    </connector>
-   
+
    <connector id="16">
       <figure>15</figure>
 	  <figure>13</figure>
 	  <end-style>ER mand many</end-style>
 	  <end-style>ER opt many</end-style>
    </connector>
-   
+
    <connector id="20">
       <figure>2</figure>
 	  <figure>13</figure>
 	  <end-style>ER single</end-style>
 	  <end-style>ER opt many</end-style>
    </connector>
-   
+
    <connector id="21">
       <figure>15</figure>
 	  <figure>3</figure>
 	  <end-style>null</end-style>
 	  <end-style>null</end-style>
    </connector>
-   
+
    <connector id="22">
       <figure>-1</figure>
 	  <figure>13</figure>
 	  <end-style>null</end-style>
 	  <end-style>null</end-style>
    </connector>
-   
+
    <connector id="23">
       <figure>5</figure>
 	  <figure>13</figure>
 	  <end-style>null</end-style>
 	  <end-style>null</end-style>
    </connector>
-   
+
    <connector id="24">
       <figure>6</figure>
 	  <figure>2</figure>
